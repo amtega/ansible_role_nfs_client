@@ -1,2 +1,35 @@
 ---
 # Role default lower priority variables
+
+# List of dicts with nfs mount points to configure. The structure of the dicts
+# is the following:
+#
+# {
+#   src: <host:/path>       # Source of the mount point
+#   path: <path>            # Path to the mount point
+#   opts: <opt>             # Mount options
+#   state: <state>          # State of the mount point. Can be absent, mounted,
+#                           # present and unmounted. The meaning is the same
+#                           # that in ansible mount module
+# }
+
+nfs_client_mounts: []
+
+# Dicitionary with the default mount point options to use if no other ones are
+# specified in the `nfs_client_mounts` variable. The members of the dict are the
+# same attributes that the ones expected by `nfs_client_mounts` variable
+
+nfs_client_mounts_defaults: {}
+
+# Create or not mount points paths if they doesn't exist
+
+nfs_client_mounts_create_paths: yes
+
+# Proxy settings
+
+nfs_client_http_proxy: >-
+  {{ ansible_facts.env.http_proxy | default('') }}
+nfs_client_https_proxy: >-
+  {{ ansible_facts.env.https_proxy | default('') }}
+nfs_client_no_proxy: >-
+  {{ ansible_facts.env.no_proxy | default('') }}

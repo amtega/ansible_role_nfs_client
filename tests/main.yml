@@ -1,2 +1,53 @@
 ---
 # Tasks for testing role
+
+- name: run idempotence test
+  hosts: localhost
+  roles:
+    - role: amtega.docker_presets
+      docker_presets_images_json_query: >-
+        [? starts_with(name, `centos-6`)
+           || starts_with(name, `centos-7`)
+           || starts_with(name, `fedora-27`)
+           || starts_with(name, `fedora-28`) ]
+
+    - role: amtega.docker_sandbox
+      docker_sandbox_state: started
+  tags:
+    - sandbox
+
+- name: test mounts role
+  hosts: docker_sandbox_containers
+  roles:
+    - amtega.nfs_client
+  vars:
+    nfs_client_mounts:
+      - src: acmeserver:/acmepath1
+        path: /mnt/path1
+      - src: acmeserver:/acmepath2
+        path: /mnt/path2
+
+    nfs_client_mounts_defaults:
+      state: present
+      opts: ro
+  tasks:
+    - name: read /etc/fstab file
+      shell: cat /etc/fstab
+      changed_when: false
+      register: read_fstab_result
+
+    - name: check that /etc/fstab contains required mounts
+      assert:
+        that:
+          - read_fstab_result.stdout is search("acmeserver:/acmepath1.*/mnt/path1.*nfs")
+          - read_fstab_result.stdout is search("acmeserver:/acmepath2.*/mnt/path2.*nfs")
+  tags:
+    - idempotence
+
+- name: cleanup docker docker sandbox
+  hosts: localhost
+  roles:
+    - role: amtega.docker_sandbox
+      docker_sandbox_state: absent
+  tags:
+    - sandbox
