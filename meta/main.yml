@@ -2,6 +2,7 @@
 # Role dependencies
 
 galaxy_info:
+  role_name: nfs_client
   author: Juan Antonio Valiño García
   description: Manage nfs client
   company: AMTEGA - Xunta de Galicia
