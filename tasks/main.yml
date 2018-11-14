@@ -1,35 +1,6 @@
 ---
 # Role tasks
 
-- name: assert platform is supported
-  assert:
-    that:
-      - distribution in nfs_client_supported_distributions
-      - >-
-        ansible_facts.distribution_version
-        is version(nfs_client_supported_versions[distribution], ">=")
-  vars:
-    distribution: "{{ ansible_facts.distribution | lower }}"
-  tags:
-    - role::nfs_client
-    - role::nfs_client::check
-
-- name: setup operating system packages
-  package:
-    name: "{{ item }}"
-    state: present
-  loop: "{{ nfs_client_os_packages[distribution] }}"
-  environment: "{{ nfs_client_http_proxy_environment }}"
-  vars:
-    distribution: >-
-      {{ ansible_facts.distribution
-         | lower
-         + "_" + ansible_facts.distribution_major_version }}
-  tags:
-    - role::nfs_client
-    - role::nfs_client::install
-    - role::nfs_client::install::packages
-
 - name: setup nfs mount points
   include_role:
     name: amtega.mounts
@@ -40,5 +11,3 @@
     mounts_create_paths: "{{ nfs_client_mounts_create_paths }}"
   tags:
     - role::nfs_client
-    - role::nfs_client::configure
-    - role::nfs_client::service

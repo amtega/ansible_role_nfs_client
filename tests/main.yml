@@ -39,8 +39,12 @@
     - name: check that /etc/fstab contains required mounts
       assert:
         that:
-          - read_fstab_result.stdout is search("acmeserver:/acmepath1.*/mnt/path1.*nfs")
-          - read_fstab_result.stdout is search("acmeserver:/acmepath2.*/mnt/path2.*nfs")
+          - >-
+            read_fstab_result.stdout
+            is search("acmeserver:/acmepath1.*/mnt/path1.*nfs")
+          - >-
+            read_fstab_result.stdout
+            is search("acmeserver:/acmepath2.*/mnt/path2.*nfs")
   tags:
     - idempotence
 
@@ -50,4 +54,5 @@
     - role: amtega.docker_sandbox
       docker_sandbox_state: absent
   tags:
+    - cleanup
     - sandbox

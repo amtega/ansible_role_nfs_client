@@ -24,12 +24,3 @@ nfs_client_mounts_defaults: {}
 # Create or not mount points paths if they doesn't exist
 
 nfs_client_mounts_create_paths: yes
-
-# Proxy settings
-
-nfs_client_http_proxy: >-
-  {{ ansible_facts.env.http_proxy | default('') }}
-nfs_client_https_proxy: >-
-  {{ ansible_facts.env.https_proxy | default('') }}
-nfs_client_no_proxy: >-
-  {{ ansible_facts.env.no_proxy | default('') }}
