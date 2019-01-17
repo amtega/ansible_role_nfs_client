@@ -24,3 +24,10 @@ nfs_client_mounts_defaults: {}
 # Create or not mount points paths if they doesn't exist
 
 nfs_client_mounts_create_paths: yes
+
+# Indicate `nfs_client_mounts` must be loaded also from host
+# variables. Any host variable that begins with "nfs_client_mounts_*" and contains
+# the necessary attributes will be loaded as an item to manage by the role. The
+# variables must follow the structure detailed before for `nfs_client_mounts`
+
+nfs_client_mounts_from_hostvars: no
