@@ -32,7 +32,7 @@
   roles:
     - amtega.nfs_client
   vars:
-    nfs_client_mounts_from_hostvars: yes
+    nfs_client_load_mounts_from_hostvars: yes
 
     nfs_client_mounts:
       - src: acmeserver:/acmepath1

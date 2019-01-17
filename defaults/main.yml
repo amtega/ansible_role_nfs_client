@@ -30,4 +30,4 @@ nfs_client_mounts_create_paths: yes
 # the necessary attributes will be loaded as an item to manage by the role. The
 # variables must follow the structure detailed before for `nfs_client_mounts`
 
-nfs_client_mounts_from_hostvars: no
+nfs_client_load_mounts_from_hostvars: no
