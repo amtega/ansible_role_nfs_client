@@ -10,6 +10,7 @@
             - role::nfs_client
       vars:
         select_hostvars_pattern: "^nfs_client_mounts_.*"
+        select_hostvars_exclude_pattern: "^nfs_client_mounts_defaults$"
         select_hostvars_fact_name: nfs_client_hostvars_mounts
         select_hostvars_output_type: list
       when: nfs_client_load_mounts_from_hostvars
