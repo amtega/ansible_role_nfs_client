@@ -1,0 +1,109 @@
+---
+# Tasks to create src directory
+
+- block:
+    - name: create temporary dir to mount main nfs export
+      tempfile:
+        state: directory
+      loop: "{{ nfs_client_mounts_missing }}"
+      loop_control:
+        loop_var: nfs_client_mount_item
+        label: "{{ nfs_client_mount_item.src }}"
+      register: nfs_client_mounts_tmp_dir_result
+
+    - block:
+        - name: temporary mount main nfs export
+          mount:
+            src: >-
+              {{ nfs_client_mount_server }}:/{{ nfs_client_mount_top_dir }}
+            path: "{{ nfs_client_mounts_tmp_dir_path }}"
+            fstype: nfs
+            opts: rw
+            state: mounted
+          loop: "{{ nfs_client_mounts_missing }}"
+          loop_control:
+            loop_var: nfs_client_mount_item
+            index_var: nfs_client_mount_index
+            label: "{{ nfs_client_mount_item.src }}"
+
+        - name: create source mount point directory within main nfs export
+          file:
+            path: "{{ nfs_client_dir_to_create }}"
+            state: directory
+            owner: >-
+              {{ nfs_client_mount_item.owner
+                 | default(nfs_client_mounts_defaults.owner)
+                 | default(omit) }}
+            group: >-
+              {{ nfs_client_mount_item.group
+                 | default(nfs_client_mounts_defaults.group)
+                 | default(omit) }}
+            mode: >-
+              {{ nfs_client_mount_item.mode
+                 | default(nfs_client_mounts_defaults.mode)
+                 | default(omit) }}
+          loop: "{{ nfs_client_mounts_missing }}"
+          loop_control:
+            loop_var: nfs_client_mount_item
+            index_var: nfs_client_mount_index
+            label: "{{ nfs_client_mount_item.src }}"
+
+        - name: umount temporary main nfs export
+          mount:
+            src: >-
+              {{ nfs_client_mount_server }}:/{{ nfs_client_mount_top_dir }}
+            path: "{{ nfs_client_mounts_tmp_dir_path }}"
+            fstype: nfs
+            opts: rw
+            state: absent
+          loop: "{{ nfs_client_mounts_missing }}"
+          loop_control:
+            loop_var: nfs_client_mount_item
+            index_var: nfs_client_mount_index
+            label: "{{ nfs_client_mount_item.src }}"
+      vars:
+        nfs_client_mounts_all_tmp_dir: >-
+          {{ nfs_client_mounts_tmp_dir_result.results }}
+        nfs_client_mounts_current_tmp_dir: >-
+          {{ nfs_client_mounts_all_tmp_dir[nfs_client_mount_index] }}
+        nfs_client_mounts_tmp_dir_path: >-
+          {{ nfs_client_mounts_current_tmp_dir.path }}
+        nfs_client_mount_server: >-
+          {{ nfs_client_mount_item.src
+             | regex_replace("(.*):(.*)", "\1") }}
+        nfs_client_mount_dir: >-
+          {{ nfs_client_mount_item.src
+             | regex_replace("(.*):/(.*)", "\2") }}
+        nfs_client_mount_top_dir: >-
+          {{ nfs_client_mount_dir.split("/")
+             | first }}
+        nfs_client_dir_to_create: >-
+          {{ nfs_client_mounts_tmp_dir_path
+             + "/"
+             + nfs_client_mount_top_dir }}
+
+    - name: remove temporary dir used to mount main nfs export
+      file:
+        path: "{{ nfs_client_tmp_dir.path }}"
+        state: absent
+      loop: "{{ nfs_client_mounts_tmp_dir_result.results }}"
+      loop_control:
+        loop_var: nfs_client_tmp_dir
+        label: "{{ nfs_client_tmp_dir.path }}"
+  vars:
+    nfs_client_paths_not_mounted: >-
+      {{ (nfs_client_mounts_to_manage
+          | map(attribute="path")
+          | list)
+         | difference(ansible_facts.mounts
+                      | selectattr("fstype", "equalto", "nfs")
+                      | map(attribute="mount")
+                      | list) }}
+    nfs_client_mounts_missing: >-
+      {{ nfs_client_mounts_to_manage
+         | selectattr("path", "in", nfs_client_paths_not_mounted)
+         | list }}
+  when: nfs_client_create_src_dir
+  tags:
+  - role::nfs_client
+  - role::nfs_client::create_src_dir

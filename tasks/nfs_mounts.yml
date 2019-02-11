@@ -1,0 +1,13 @@
+---
+# Tasks to setup nfs mounts
+
+- name: setup nfs mount points
+  include_role:
+    name: amtega.mounts
+  vars:
+    mounts: "{{ nfs_client_mounts_to_manage }}"
+    mounts_defaults: >-
+      {{ nfs_client_mounts_defaults | combine({ 'fstype': 'nfs' }) }}
+    mounts_create_paths: "{{ nfs_client_mounts_create_paths }}"
+  tags:
+    - role::nfs_client

@@ -2,29 +2,16 @@
 # Role tasks
 
 - block:
-    - name: setup fact with mounts loaded from host variables
-      include_role:
-        name: amtega.select_hostvars
-        apply:
-          tags:
-            - role::nfs_client
-      vars:
-        select_hostvars_pattern: "^nfs_client_mounts_.*"
-        select_hostvars_exclude_pattern: "^nfs_client_mounts_defaults$"
-        select_hostvars_fact_name: nfs_client_hostvars_mounts
-        select_hostvars_output_type: list
-      when: nfs_client_load_mounts_from_hostvars
+    - include_tasks: select_hostvars.yml
 
-    - name: setup nfs mount points
-      include_role:
-        name: amtega.mounts
-      vars:
-        mounts: >-
-          {{ nfs_client_mounts
-             + ((nfs_client_load_mounts_from_hostvars)
-                | ternary(nfs_client_hostvars_mounts | flatten, [])) }}
-        mounts_defaults: >-
-          {{ nfs_client_mounts_defaults | combine({ 'fstype': 'nfs' }) }}
-        mounts_create_paths: "{{ nfs_client_mounts_create_paths }}"
+    - include_tasks: create_src_dir.yml
+      when: nfs_client_create_src_dir
+
+    - include_tasks: nfs_mounts.yml
+  vars:
+    nfs_client_mounts_to_manage: >-
+      {{ nfs_client_mounts
+         + ((nfs_client_load_mounts_from_hostvars)
+            | ternary(nfs_client_hostvars_mounts | flatten, [])) }}
   tags:
     - role::nfs_client
