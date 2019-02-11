@@ -12,6 +12,15 @@
 #                           # present and unmounted. The meaning is the same
 #                           # that in ansible mount module
 # }
+#
+# Additionally, if you set to `yes` the variable
+# `nfs_client_mounts_create_paths` or `nfs_client_create_src_dir` detailed
+# below, you can specify the following attributes for the mount point, that have
+# the same meaning that in ansible `file` module:
+#
+# - owner
+# - group
+# - mode
 
 nfs_client_mounts: []
 
@@ -25,9 +34,14 @@ nfs_client_mounts_defaults: {}
 
 nfs_client_mounts_create_paths: yes
 
-# Indicate `nfs_client_mounts` must be loaded also from host
-# variables. Any host variable that begins with "nfs_client_mounts_*" and contains
-# the necessary attributes will be loaded as an item to manage by the role. The
-# variables must follow the structure detailed before for `nfs_client_mounts`
+# Indicate `nfs_client_mounts` must be loaded also from host variables. Any host
+# variable that begins with "nfs_client_mounts_*" and contains the necessary
+# attributes will be loaded as an item to manage by the role. The variables must
+# follow the structure detailed before for `nfs_client_mounts`
 
 nfs_client_load_mounts_from_hostvars: no
+
+# Tell the role to create the source mount point directory within the NFS export
+# main directory if it doesn't exists
+
+nfs_client_create_src_dir: no
