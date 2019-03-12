@@ -1,7 +1,7 @@
 ---
 # Tasks for testing role
 
-- name: run idempotence test
+- name: Run idempotence test
   hosts: localhost
   roles:
     - role: amtega.docker_presets
@@ -16,10 +16,10 @@
   tags:
     - sandbox
 
-- name: prepare testing containers
+- name: Prepare testing containers
   hosts: docker_sandbox_containers
   tasks:
-    - name: simulate host variable with mounts
+    - name: Simulate host variable with mounts
       set_fact:
         nfs_client_mounts_hostvar:
           - src: acmeserver:/acmepath3
@@ -27,7 +27,7 @@
   tags:
     - idempotence
 
-- name: test mounts role
+- name: Test mounts role
   hosts: docker_sandbox_containers
   roles:
     - amtega.nfs_client
@@ -44,12 +44,12 @@
       state: present
       opts: ro
   tasks:
-    - name: read /etc/fstab file
+    - name: Read /etc/fstab file
       shell: cat /etc/fstab
       changed_when: false
       register: read_fstab_result
 
-    - name: check that /etc/fstab contains required mounts
+    - name: Check that /etc/fstab contains required mounts
       assert:
         that:
           - >-
@@ -64,7 +64,7 @@
   tags:
     - idempotence
 
-- name: cleanup docker docker sandbox
+- name: Cleanup docker docker sandbox
   hosts: localhost
   roles:
     - role: amtega.docker_sandbox

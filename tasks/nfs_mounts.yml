@@ -1,7 +1,7 @@
 ---
 # Tasks to setup nfs mounts
 
-- name: setup nfs mount points
+- name: Setup nfs mount points
   include_role:
     name: amtega.mounts
   vars:

@@ -2,8 +2,6 @@
 # Role tasks
 
 - block:
-    - include_tasks: select_hostvars.yml
-
     - include_tasks: create_src_dir.yml
       when: nfs_client_create_src_dir
 
