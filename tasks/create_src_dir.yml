@@ -2,7 +2,7 @@
 # Tasks to create src directory
 
 - block:
-    - name: create temporary dir to mount main nfs export
+    - name: Create temporary dir to mount main nfs export
       tempfile:
         state: directory
       loop: "{{ nfs_client_mounts_missing }}"
@@ -12,7 +12,7 @@
       register: nfs_client_mounts_tmp_dir_result
 
     - block:
-        - name: temporary mount main nfs export
+        - name: Temporary mount main nfs export
           mount:
             src: >-
               {{ nfs_client_mount_server }}:/{{ nfs_client_mount_top_dir }}
@@ -26,7 +26,7 @@
             index_var: nfs_client_mount_index
             label: "{{ nfs_client_mount_item.src }}"
 
-        - name: create source mount point directory within main nfs export
+        - name: Create source mount point directory within main nfs export
           file:
             path: "{{ nfs_client_dir_to_create }}"
             state: directory
@@ -48,7 +48,7 @@
             index_var: nfs_client_mount_index
             label: "{{ nfs_client_mount_item.src }}"
 
-        - name: umount temporary main nfs export
+        - name: Umount temporary main nfs export
           mount:
             src: >-
               {{ nfs_client_mount_server }}:/{{ nfs_client_mount_top_dir }}
@@ -82,7 +82,7 @@
              + "/"
              + nfs_client_mount_top_dir }}
 
-    - name: remove temporary dir used to mount main nfs export
+    - name: Remove temporary dir used to mount main nfs export
       file:
         path: "{{ nfs_client_tmp_dir.path }}"
         state: absent

@@ -2,20 +2,13 @@
 
 This is an [Ansible](http://www.ansible.com) role which manage a nfs client.
 
-## Requirements
-
-[Ansible 2.7+](http://docs.ansible.com/ansible/latest/intro_installation.html)
-
 ## Role Variables
 
 A list of all the default variables for this role is available in `defaults/main.yml`.
 
 ## Dependencies
 
-- [amtega.check_platform](https://galaxy.ansible.com/amtega/check_platform)
-- [amtega.packages](https://galaxy.ansible.com/amtega/packages)
 - [amtega.mounts](https://galaxy.ansible.com/amtega/mounts)
-- [amtega.select_hostvars](https://galaxy.ansible.com/amtega/select_hostvars)
 
 ## Example Playbook
 
