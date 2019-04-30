@@ -1,4 +1,4 @@
-# Ansible files role
+# Ansible nfs_client role
 
 This is an [Ansible](http://www.ansible.com) role which manage a nfs client.
 
