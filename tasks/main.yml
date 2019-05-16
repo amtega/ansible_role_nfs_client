@@ -10,6 +10,9 @@
     nfs_client_mounts_to_manage: >-
       {{ nfs_client_mounts
          + ((nfs_client_load_mounts_from_hostvars)
-            | ternary(nfs_client_hostvars_mounts | flatten, [])) }}
+            | ternary(nfs_client_hostvars_mounts
+                      | default([])
+                      | flatten,
+                      [])) }}
   tags:
     - role::nfs_client
