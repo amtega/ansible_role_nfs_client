@@ -47,6 +47,9 @@ dependencies:
         pattern: "^nfs_client_mounts_.*"
         exclude_pattern: "^nfs_client_mounts_defaults$"
         fact_name: nfs_client_hostvars_mounts
+        attributes:
+          - src
+          - path
         output_type: list
     when: nfs_client_load_mounts_from_hostvars
     tags:
