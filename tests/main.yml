@@ -5,11 +5,12 @@
   hosts: localhost
   roles:
     - role: amtega.docker_presets
-      docker_presets_images_json_query: >-
-        [? starts_with(name, `centos-6`)
-           || starts_with(name, `centos-7`)
-           || starts_with(name, `fedora-27`)
-           || starts_with(name, `fedora-28`) ]
+      vars:
+        docker_presets_images_json_query: >-
+          [? starts_with(name, `centos-6`)
+             || starts_with(name, `centos-7`)
+             || starts_with(name, `fedora-29`)
+             || starts_with(name, `fedora-30`) ]
 
     - role: amtega.docker_sandbox
       docker_sandbox_state: started
@@ -46,7 +47,7 @@
   tasks:
     - name: Read /etc/fstab file
       shell: cat /etc/fstab
-      changed_when: false
+      changed_when: no
       register: read_fstab_result
 
     - name: Check that /etc/fstab contains required mounts
@@ -68,7 +69,8 @@
   hosts: localhost
   roles:
     - role: amtega.docker_sandbox
-      docker_sandbox_state: absent
+      vars:
+        docker_sandbox_state: absent
   tags:
     - cleanup
     - sandbox
