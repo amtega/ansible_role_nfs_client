@@ -3,7 +3,7 @@
 
 - block:
     - include_tasks: create_src_dir.yml
-      when: nfs_client_create_src_dir
+      when: nfs_client_create_src_dir | bool
 
     - include_tasks: nfs_mounts.yml
   vars:

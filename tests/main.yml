@@ -46,7 +46,7 @@
   tasks:
     - name: Read /etc/fstab file
       shell: cat /etc/fstab
-      changed_when: false
+      changed_when: no
       register: read_fstab_result
 
     - name: Check that /etc/fstab contains required mounts
