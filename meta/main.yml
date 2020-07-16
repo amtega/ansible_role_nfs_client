@@ -13,6 +13,7 @@ galaxy_info:
       versions:
         - 6
         - 7
+        - 8
     - name: Fedora
       versions:
         - 29
@@ -28,9 +29,7 @@ dependencies:
       check_platform_distributions:
         centos: 6
         fedora: 29
-        rhel: 6
-    tags:
-      - role::nfs_client
+        redhat: 6
 
   - role: amtega.packages
     vars:
@@ -38,8 +37,6 @@ dependencies:
         all:
           all:
             nfs-utils: present
-    tags:
-      - role::nfs_client
 
   - role: amtega.select_hostvars
     vars:
@@ -52,11 +49,8 @@ dependencies:
           - path
         output_type: list
     when: nfs_client_load_mounts_from_hostvars | bool
-    tags:
-      - role::nfs_client
 
   - role: amtega.mounts
     when: no
     tags:
-      - role::nfs_client
       - never

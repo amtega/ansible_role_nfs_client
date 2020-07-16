@@ -8,6 +8,7 @@
 #   src: <host:/path>       # Source of the mount point
 #   path: <path>            # Path to the mount point
 #   opts: <opt>             # Mount options
+#   nfs4: <yes_no>          # Indicate if mount type is NFS4
 #   state: <state>          # State of the mount point. Can be absent, mounted,
 #                           # present and unmounted. The meaning is the same
 #                           # that in ansible mount module
