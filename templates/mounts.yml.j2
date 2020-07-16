@@ -1,0 +1,10 @@
+{% for mount in nfs_client_mounts_to_manage %}
+{% if mount.nfs4
+      | default(nfs_client_mounts_defaults.nfs4)
+      | default(false)
+      | bool %}
+- {{ mount | combine({'fstype': 'nfs4'}) | to_json }}
+{% else %}
+- {{ mount | combine({'fstype': 'nfs'}) | to_json }}
+{% endif %}
+{% endfor %}
