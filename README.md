@@ -26,6 +26,8 @@ This is an example playbook:
     nfs_client_mounts_defaults:
       state: present
       opts: ro
+
+    nfs_client_rpc_statd_port: 662
 ```
 
 ## Testing

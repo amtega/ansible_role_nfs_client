@@ -46,3 +46,8 @@ nfs_client_load_mounts_from_hostvars: no
 # main directory if it doesn't exists
 
 nfs_client_create_src_dir: no
+
+# Set rpc-statd port to fixed value. Useful in order to restrict network access
+# to a set of fixed ports throug a firewall.
+# 
+#nfs_client_rpc_statd_port: 662
