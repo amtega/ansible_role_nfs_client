@@ -1,7 +1,14 @@
 ---
 # Role tasks
 
-- name: Main
+- block:
+    - when: nfs_client_create_src_dir | bool
+      include_tasks: create_src_dir.yml
+
+    - include_tasks: nfs_mounts.yml
+
+    - when: nfs_client_rpc_statd_port is defined
+      include_tasks: rpc_statd.yml
   vars:
     nfs_client_mounts_to_manage: >-
       {{ nfs_client_mounts
@@ -12,11 +19,3 @@
                       [])) }}
   tags:
     - role::nfs_client
-  block:
-    - when: nfs_client_create_src_dir | bool
-      include_tasks: create_src_dir.yml
-
-    - include_tasks: nfs_mounts.yml
-
-    - when: nfs_client_rpc_statd_port is defined
-      include_tasks: firewall_rpc_statd.yml
