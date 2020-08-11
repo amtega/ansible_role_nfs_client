@@ -1,7 +1,7 @@
 ---
-# Tasks to configure firewall rpc-statd.service port and avoid a random port
+# Tasks to configure rpc-statd.service port
 
-- name: Configure firewall rpc-statd.service port
+- name: Configure rpc-statd.service port
   lineinfile:
     path: /etc/sysconfig/nfs
     regexp: '^STATD_PORT='
@@ -10,8 +10,7 @@
   register: rpc_statd_service_config_result
 
 - name: Restart rpc-statd.service to apply configuration
-  when: rpc_statd_service_config_result is changed
-  systemd:
-    state: restarted
-    daemon_reload: yes
+  service:
     name: rpc-statd.service
+    state: restarted
+  when: rpc_statd_service_config_result is changed

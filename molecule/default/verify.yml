@@ -5,7 +5,7 @@
   gather_facts: no
   tasks:
     - name: Read /etc/fstab file
-      shell: cat /etc/fstab
+      command: cat /etc/fstab
       changed_when: no
       register: read_fstab_result
 
