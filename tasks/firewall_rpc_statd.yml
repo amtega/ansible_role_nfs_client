@@ -7,7 +7,6 @@
     regexp: '^STATD_PORT='
     insertafter: '^#STATD_PORT='
     line: "STATD_PORT={{ nfs_client_rpc_statd_port }}"
-    # line: "STATD_PORT={{ grp_all_rpc_statd_service_fixed_port }}"
   register: rpc_statd_service_config_result
 
 - name: Restart rpc-statd.service to apply configuration
