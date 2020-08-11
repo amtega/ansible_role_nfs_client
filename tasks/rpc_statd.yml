@@ -11,6 +11,10 @@
 
 - name: Restart rpc-statd.service to apply configuration
   service:
-    name: rpc-statd.service
+    name: rpc-statd
     state: restarted
   when: rpc_statd_service_config_result is changed
+  vars:
+    nfs_client_rpc_statd_service_name: >-
+      {{ (ansible_facts.distribution_major_version is version("6", "<="))
+         | ternary("nfslock", "rpc-statd") }}
