@@ -7,4 +7,6 @@
 {% else %}
 - {{ mount | combine({'fstype': 'nfs'}) | to_json }}
 {% endif %}
+{% else %}
+[]
 {% endfor %}
