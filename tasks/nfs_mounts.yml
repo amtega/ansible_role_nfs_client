@@ -8,5 +8,6 @@
     mounts: "{{ lookup('template', 'mounts.yml.j2') | from_yaml }}"
     mounts_defaults: "{{ nfs_client_mounts_defaults }}"
     mounts_create_paths: "{{ nfs_client_mounts_create_paths }}"
+    mounts_load_from_hostvars: no
   tags:
     - role::nfs_client

@@ -8,9 +8,7 @@
     - include_tasks: nfs_mounts.yml
 
     - include_tasks: rpc_statd.yml
-      when:
-        - nfs_client_rpc_statd_port != None
-        - nfs_client_rpc_statd_port | string | length > 0
+      when: nfs_client_rpc_statd_port | default("") | string | length > 0
   vars:
     nfs_client_mounts_to_manage: >-
       {{ nfs_client_mounts
