@@ -105,5 +105,5 @@
          | list }}
   when: nfs_client_create_src_dir | bool
   tags:
-  - role::nfs_client
-  - role::nfs_client::create_src_dir
+    - role::nfs_client
+    - role::nfs_client::create_src_dir

@@ -9,7 +9,7 @@
     line: "STATD_PORT={{ nfs_client_rpc_statd_port }}"
   register: rpc_statd_service_config_result
 
-- name: Restart rpc-statd.service to apply configuration
+- name: Restart rpc-statd.service to apply configuration # noqa no-handler
   service:
     name: rpc-statd
     state: restarted
