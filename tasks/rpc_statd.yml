@@ -3,11 +3,28 @@
 
 - name: Configure rpc-statd.service port
   lineinfile:
-    path: /etc/sysconfig/nfs
-    regexp: '^STATD_PORT='
-    insertafter: '^#STATD_PORT='
-    line: "STATD_PORT={{ nfs_client_rpc_statd_port }}"
+    path: "{{ nfs_client_config_file }}"
+    regexp: "{{ nfs_client_regexp }}"
+    insertafter: "{{ nfs_client_insertafter }}"
+    line: "{{ nfs_client_line }}"
   register: rpc_statd_service_config_result
+  vars:
+    nfs_client_config_file: >-
+      {{ (ansible_facts.distribution_major_version is version("7", ">"))
+         | ternary("/etc/nfs.conf", "/etc/sysconfig/nfs") }}
+
+    nfs_client_regexp: >-
+      {{ (ansible_facts.distribution_major_version is version("7", ">"))
+         | ternary("^port=", "^STATD_PORT=") }}
+
+    nfs_client_insertafter: >-
+      {{ (ansible_facts.distribution_major_version is version("7", ">"))
+         | ternary("statd", "^#STATD_PORT=") }}
+
+    nfs_client_line: >-
+      {{ (ansible_facts.distribution_major_version is version("7", ">"))
+         | ternary("port=", "STATD_PORT=")
+         ~ nfs_client_rpc_statd_port }}
 
 - name: Restart rpc-statd.service to apply configuration # noqa no-handler
   service:

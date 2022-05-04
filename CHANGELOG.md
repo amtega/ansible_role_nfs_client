@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.1] - 2022-05-04
+### Fixed
+- Fixed rpc-statd.service port configuration for EL 8.
+
 ## [1.6.0] - 2022-02-04
 ### Changed
 - Supported distros. Related to ansible/main#178
