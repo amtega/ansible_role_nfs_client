@@ -1,7 +1,7 @@
 ---
-# Role tasks
 
-- block:
+- name: Setup nfs client
+  block:
     - include_tasks: create_src_dir.yml
       when: nfs_client_create_src_dir | bool
 

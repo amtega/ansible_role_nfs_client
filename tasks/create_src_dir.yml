@@ -1,9 +1,9 @@
 ---
-# Tasks to create src directory
 
-- block:
+- name: Setup source directory
+  block:
     - name: Create temporary dir to mount main nfs export
-      tempfile:
+      ansible.builtin.tempfile:
         state: directory
       loop: "{{ nfs_client_mounts_missing }}"
       loop_control:
@@ -11,7 +11,8 @@
         label: "{{ nfs_client_mount_item.src }}"
       register: nfs_client_mounts_tmp_dir_result
 
-    - block:
+    - name: Perform source directory setup
+      block:
         - name: Temporary mount main nfs export
           mount:
             src: >-
@@ -27,7 +28,7 @@
             label: "{{ nfs_client_mount_item.src }}"
 
         - name: Create source mount point directory within main nfs export
-          file:
+          ansible.builtin.file:
             path: "{{ nfs_client_dir_to_create }}"
             state: directory
             owner: >-
@@ -83,7 +84,7 @@
              + nfs_client_mount_top_dir }}
 
     - name: Remove temporary dir used to mount main nfs export
-      file:
+      ansible.builtin.file:
         path: "{{ nfs_client_tmp_dir.path }}"
         state: absent
       loop: "{{ nfs_client_mounts_tmp_dir_result.results }}"
