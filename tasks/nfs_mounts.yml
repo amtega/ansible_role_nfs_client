@@ -2,7 +2,7 @@
 # Tasks to setup nfs mounts
 
 - name: Setup nfs mount points
-  include_role:
+  ansible.builtin.include_role:
     name: amtega.mounts
   vars:
     mounts: "{{ lookup('template', 'mounts.yml.j2') | from_yaml }}"

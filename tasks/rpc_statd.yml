@@ -2,7 +2,7 @@
 # Tasks to configure rpc-statd.service port
 
 - name: Configure rpc-statd.service port
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ nfs_client_config_file }}"
     regexp: "{{ nfs_client_regexp }}"
     insertafter: "{{ nfs_client_insertafter }}"
@@ -27,7 +27,7 @@
          ~ nfs_client_rpc_statd_port }}
 
 - name: Restart rpc-statd.service to apply configuration # noqa no-handler
-  service:
+  ansible.builtin.service:
     name: rpc-statd
     state: restarted
   when: rpc_statd_service_config_result is changed

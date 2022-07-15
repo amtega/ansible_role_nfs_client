@@ -5,12 +5,12 @@
   gather_facts: no
   tasks:
     - name: Read /etc/fstab file
-      command: cat /etc/fstab
+      ansible.builtin.command: cat /etc/fstab
       changed_when: no
       register: read_fstab_result
 
     - name: Check that /etc/fstab contains required mounts
-      assert:
+      ansible.builtin.assert:
         that:
           - >-
             read_fstab_result.stdout
